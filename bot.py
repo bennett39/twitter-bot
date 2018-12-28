@@ -1,11 +1,7 @@
-PYTHONIOENCODING='utf8'
-
 import sys
 import tweepy
 from secrets import consumer_key, consumer_secret, access_token, \
     access_token_secret
-
-print(sys.stdout.encoding)
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -14,6 +10,13 @@ api = tweepy.API(auth)
 user = api.me()
 print(user.name)
 
-public_tweets = api.home_timeline()
-for tweet in public_tweets:
-    print(tweet.text)
+search = "url:ed8d13397c9c"
+numberOfTweets = 100
+for tweet in tweepy.Cursor(api.search, search).items(numberOfTweets):
+    try:
+        tweet.favorite()
+        print('Favoriteded the tweet' + tweet.text)
+    except tweepy.TweepError as e:
+        print(e.reason)
+    except StopIteration:
+        break
