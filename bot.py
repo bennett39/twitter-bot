@@ -12,7 +12,7 @@ numberOfTweets = 100
 for tweet in tweepy.Cursor(api.search, search).items(numberOfTweets):
     try:
         tweet.favorite()
-        print('Favoriteded a tweet')
+        print('Favorited a tweet')
     except tweepy.TweepError as e:
         print(e.reason)
     except StopIteration:
