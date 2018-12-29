@@ -7,15 +7,12 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
-user = api.me()
-print(user.name)
-
 search = "url:ed8d13397c9c"
 numberOfTweets = 100
 for tweet in tweepy.Cursor(api.search, search).items(numberOfTweets):
     try:
         tweet.favorite()
-        print('Favoriteded the tweet' + tweet.text)
+        print('Favoriteded a tweet')
     except tweepy.TweepError as e:
         print(e.reason)
     except StopIteration:
