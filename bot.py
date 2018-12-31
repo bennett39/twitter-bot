@@ -1,4 +1,4 @@
-# A program to favorite tweets that mention certain URLs
+# A program to favorite and reply to tweets that mention certain URLs
 # Tutorial: https://bit.ly/2s2dtvS
 # Tweepy docs: http://docs.tweepy.org/en/3.7.0/
 
@@ -16,15 +16,17 @@ def main():
 
     # Change these Twitter URL ids to whatever you want to search for
     urls = ["url:ed8d13397c9c", "url:443940b8ef9f"]
+    search_urls(api, urls)
 
+
+def search_urls(api, urls):
     for url in urls:
-        search = url
         number_of_tweets = 3
-        for tweet in tweepy.Cursor(api.search, search).items(number_of_tweets):
+        for tweet in tweepy.Cursor(api.search, url).items(number_of_tweets):
             try:
                 tweet.favorite()
                 thank(api, tweet)
-                print("Favorited and thanked")
+                print("Favorited and thanked " + tweet.user.screen_name)
             except tweepy.TweepError as e:
                 print(e.reason)
             except StopIteration:
