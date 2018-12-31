@@ -4,24 +4,49 @@
 
 import sys
 import tweepy
+import random
+
 from secrets import consumer_key, consumer_secret, access_token, \
     access_token_secret
 
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
-api = tweepy.API(auth)
+def main():
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
 
-# Change these Twitter URL ids to whatever you want to search for
-urls = ["url:ed8d13397c9c", "url:443940b8ef9f"]
+    # Change these Twitter URL ids to whatever you want to search for
+    urls = ["url:ed8d13397c9c", "url:443940b8ef9f"]
 
-for url in urls:
-    search = url
-    numberOfTweets = 100
-    for tweet in tweepy.Cursor(api.search, search).items(numberOfTweets):
-        try:
-            tweet.favorite()
-            print('Favorited a tweet')
-        except tweepy.TweepError as e:
-            print(e.reason)
-        except StopIteration:
-            break
+    for url in urls:
+        search = url
+        numberOfTweets = 3
+        for tweet in tweepy.Cursor(api.search, search).items(numberOfTweets):
+            try:
+                tweet.favorite()
+                thank(api, tweet)
+                print("Favorited and thanked")
+            except tweepy.TweepError as e:
+                print(e.reason)
+            except StopIteration:
+                break
+
+
+def thank(api, tweet):
+    t = ["Thanks for sharing my article!", \
+            "Glad you liked the article!", \
+            "Thanks for the tweet of my article!", \
+            "Glad to hear you enjoyed my article!", \
+            "I'm happy you liked the article enough to tweet it!", \
+            "Thanks for the share! Glad you liked it!", \
+            "I appreciate the tweet -- glad you enjoyed my article!",
+            "Glad you liked the article enough to share it!", \
+            "Appreciate you sharing my article!"]
+    thanks = random.choice(t)
+
+    reply = "@" + tweet.user.screen_name + " " + thanks
+    print(reply)
+    api.update_status(reply, tweet.id)
+
+
+if __name__ == "__main__":
+    main()
