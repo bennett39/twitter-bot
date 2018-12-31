@@ -1,7 +1,3 @@
-# A program to favorite and reply to tweets that mention certain URLs
-# Tutorial: https://bit.ly/2s2dtvS
-# Tweepy docs: http://docs.tweepy.org/en/3.7.0/
-
 import sys
 import tweepy
 import random
@@ -10,6 +6,11 @@ from secrets import consumer_key, consumer_secret, access_token, \
     access_token_secret
 
 def main():
+    """
+    A program to favorite and reply to tweets that mention certain URLs
+    Tutorial: https://bit.ly/2s2dtvS
+    Tweepy docs: http://docs.tweepy.org/en/3.7.0/
+    """
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth)
@@ -20,6 +21,12 @@ def main():
 
 
 def search_urls(api, urls):
+    """
+    Uses Twitter standard search API to fetch tweets that reference a
+    given URL. Docs: https://bit.ly/2lALpfQ
+
+    For each tweet in the search, favorite and reply with a thank you.
+    """
     for url in urls:
         number_of_tweets = 3
         for tweet in tweepy.Cursor(api.search, url).items(number_of_tweets):
@@ -34,6 +41,10 @@ def search_urls(api, urls):
 
 
 def thank(api, tweet):
+    """
+    Crafts a reply using the screen name and id of a given tweet. Choses
+    a random thank you message as the reply.
+    """
     t = ["Thanks for sharing my article!", \
             "Glad you liked the article!", \
             "Thanks for the tweet of my article!", \
