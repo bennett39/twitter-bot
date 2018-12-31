@@ -19,8 +19,8 @@ def main():
 
     for url in urls:
         search = url
-        numberOfTweets = 3
-        for tweet in tweepy.Cursor(api.search, search).items(numberOfTweets):
+        number_of_tweets = 3
+        for tweet in tweepy.Cursor(api.search, search).items(number_of_tweets):
             try:
                 tweet.favorite()
                 thank(api, tweet)
@@ -44,7 +44,6 @@ def thank(api, tweet):
     thanks = random.choice(t)
 
     reply = "@" + tweet.user.screen_name + " " + thanks
-    print(reply)
     api.update_status(reply, tweet.id)
 
 
