@@ -28,7 +28,7 @@ def search_urls(api, urls):
     For each tweet in the search, favorite and reply with a thank you.
     """
     for url in urls:
-        number_of_tweets = 3
+        number_of_tweets = 30
         for tweet in tweepy.Cursor(api.search, url).items(number_of_tweets):
             try:
                 tweet.favorite()
