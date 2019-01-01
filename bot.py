@@ -19,6 +19,7 @@ def main():
     urls = ["url:ed8d13397c9c", "url:443940b8ef9f"]
     search_urls(api, urls)
 
+    get_mentions(api)
 
 def search_urls(api, urls):
     """
@@ -28,12 +29,12 @@ def search_urls(api, urls):
     For each tweet in the search, favorite and reply with a thank you.
     """
     for url in urls:
-        number_of_tweets = 30
-        for tweet in tweepy.Cursor(api.search, url).items(number_of_tweets):
+        number_of_tweets = 20
+        for t in tweepy.Cursor(api.search, url).items(number_of_tweets):
             try:
-                tweet.favorite()
-                thank(api, tweet)
-                print("Favorited and thanked " + tweet.user.screen_name)
+                t.favorite()
+                thank(api, t)
+                print("Favorited and thanked " + t.user.screen_name)
             except tweepy.TweepError as e:
                 print(e.reason)
             except StopIteration:
@@ -58,6 +59,18 @@ def thank(api, tweet):
 
     reply = "@" + tweet.user.screen_name + " " + thanks
     api.update_status(reply, tweet.id)
+
+
+def get_mentions(api):
+    mentions = api.mentions_timeline(count=20)
+    for m in mentions:
+        try:
+            m.favorite()
+            print("Favorited " + t.user.screen_name)
+        except tweepy.TweepError as e:
+            print(e.reason)
+        except StopIteration:
+            break
 
 
 if __name__ == "__main__":
