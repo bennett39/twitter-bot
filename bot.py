@@ -62,11 +62,15 @@ def thank(api, tweet):
 
 
 def get_mentions(api):
+    """
+    Finds mentions of the authenticated user and favorites them if they
+    haven't been favorited already.
+    """
     mentions = api.mentions_timeline(count=20)
     for m in mentions:
         try:
             m.favorite()
-            print("Favorited " + t.user.screen_name)
+            print("Favorited " + m.user.screen_name)
         except tweepy.TweepError as e:
             print(e.reason)
         except StopIteration:
