@@ -20,6 +20,7 @@ def main():
     search_urls(api, urls)
 
     get_mentions(api)
+    follow_back(api)
 
 def search_urls(api, urls):
     """
@@ -34,6 +35,7 @@ def search_urls(api, urls):
             try:
                 t.favorite()
                 thank(api, t)
+                t.user.follow()
                 print("Favorited and thanked " + t.user.screen_name)
             except tweepy.TweepError as e:
                 print(e.reason)
@@ -70,7 +72,19 @@ def get_mentions(api):
     for m in mentions:
         try:
             m.favorite()
-            print("Favorited " + m.user.screen_name)
+            m.user.follow()
+            print("Favorited and followed " + m.user.screen_name)
+        except tweepy.TweepError as e:
+            print(e.reason)
+        except StopIteration:
+            break
+
+
+def follow_back(api):
+    for follower in tweepy.Cursor(api.followers).items(30):
+        try:
+            follower.follow()
+            print("Followed back " + follower.screen_name)
         except tweepy.TweepError as e:
             print(e.reason)
         except StopIteration:
