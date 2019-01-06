@@ -81,6 +81,10 @@ def get_mentions(api):
 
 
 def follow_back(api):
+    """
+    Follows back the most recent 30 users who follow the authenticated
+    user. Change `.items(30)` to change the number of follow-backs.
+    """
     for follower in tweepy.Cursor(api.followers).items(30):
         try:
             follower.follow()
