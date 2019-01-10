@@ -30,7 +30,7 @@ def search_urls(api, urls):
     For each tweet in the search, favorite and reply with a thank you.
     """
     for url in urls:
-        number_of_tweets = 20
+        number_of_tweets = 10
         for t in tweepy.Cursor(api.search, url).items(number_of_tweets):
             try:
                 t.favorite()
@@ -68,7 +68,7 @@ def get_mentions(api):
     Finds mentions of the authenticated user and favorites them if they
     haven't been favorited already.
     """
-    mentions = api.mentions_timeline(count=20)
+    mentions = api.mentions_timeline(count=10)
     for m in mentions:
         try:
             m.favorite()
@@ -85,7 +85,7 @@ def follow_back(api):
     Follows back the most recent 30 users who follow the authenticated
     user. Change `.items(30)` to change the number of follow-backs.
     """
-    for follower in tweepy.Cursor(api.followers).items(30):
+    for follower in tweepy.Cursor(api.followers).items(10):
         try:
             follower.follow()
             print("Followed back " + follower.screen_name)
