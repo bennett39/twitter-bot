@@ -63,7 +63,8 @@ def thank(api, tweet):
             "Thanks for the share! Glad you liked it!", \
             "I appreciate the tweet -- glad you enjoyed my article!",
             "Glad you liked the article enough to share it!", \
-            "Appreciate you sharing my article!"]
+            "Appreciate you sharing my article!", \
+            "Thanks for tweeting my article!"]
     thanks = random.choice(t)
 
     reply = "@" + tweet.user.screen_name + " " + thanks
@@ -73,7 +74,7 @@ def thank(api, tweet):
 def get_mentions(api):
     """
     Finds mentions of the authenticated user and favorites them if they
-    haven't been favorited already.
+    haven't been favorited already. Also follows all mentioners.
     """
     mentioners = []
     errors = 0
@@ -95,8 +96,8 @@ def get_mentions(api):
 
 def follow_back(api):
     """
-    Follows back the most recent 30 users who follow the authenticated
-    user. Change `.items(30)` to change the number of follow-backs.
+    Follows back the most recent ## users who follow the authenticated
+    user. Change `.items(##)` to change the number of follow-backs.
     """
     follow_backs = []
     errors = 0
