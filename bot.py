@@ -1,5 +1,6 @@
 import random
 import sys
+from tqdm import tqdm
 import tweepy
 
 from secrets import consumer_key, consumer_secret, access_token, \
@@ -33,8 +34,8 @@ def search_urls(api, urls):
     users_thanked = []
     errors = 0
     for url in urls:
-        number_of_tweets = 10
-        for t in tweepy.Cursor(api.search, url).items(number_of_tweets):
+        num_tweets = 10
+        for t in tqdm(tweepy.Cursor(api.search, url).items(num_tweets)):
             try:
                 t.favorite()
                 thank(api, t)
@@ -46,7 +47,7 @@ def search_urls(api, urls):
                 break
 
     print(f"Thanked {users_thanked}")
-    print(f"{errors} tweets were already favorited")
+    print(f"{errors} tweets were already favorited", end="\n\n")
 
 
 def thank(api, tweet):
@@ -78,7 +79,7 @@ def get_mentions(api):
     errors = 0
 
     mentions = api.mentions_timeline(count=10)
-    for m in mentions:
+    for m in tqdm(mentions):
         try:
             m.favorite()
             m.user.follow()
@@ -89,7 +90,7 @@ def get_mentions(api):
             break
 
     print(f"Followed mentioners: {mentioners}")
-    print(f"{errors} users already followed")
+    print(f"{errors} users already followed", end="\n\n")
 
 
 def follow_back(api):
@@ -100,7 +101,7 @@ def follow_back(api):
     follow_backs = []
     errors = 0
 
-    for follower in tweepy.Cursor(api.followers).items(10):
+    for follower in tqdm(tweepy.Cursor(api.followers).items(10)):
         try:
             follower.follow()
             follow_backs.append(follower.screen_name)
@@ -110,7 +111,7 @@ def follow_back(api):
             break
     
     print(f"Followed back: {follow_backs}")
-    print(f"{errors} users already followed")
+    print(f"{errors} users already followed", end="\n\n")
 
 
 if __name__ == "__main__":
