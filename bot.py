@@ -22,6 +22,7 @@ def main():
     get_mentions(api)
     follow_back(api)
 
+
 def search_urls(api, urls):
     """
     Uses Twitter standard search API to fetch tweets that reference a
@@ -29,6 +30,8 @@ def search_urls(api, urls):
 
     For each tweet in the search, favorite and reply with a thank you.
     """
+    users_thanked = []
+    errors = 0
     for url in urls:
         number_of_tweets = 10
         for t in tweepy.Cursor(api.search, url).items(number_of_tweets):
@@ -36,11 +39,14 @@ def search_urls(api, urls):
                 t.favorite()
                 thank(api, t)
                 t.user.follow()
-                print("Favorited and thanked " + t.user.screen_name)
-            except tweepy.TweepError as e:
-                print(e.reason)
+                users_thanked.append(t.user.screen_name)
+            except tweepy.TweepError:
+                errors += 1
             except StopIteration:
                 break
+
+    print(f"Thanked {users_thanked}")
+    print(f"{errors} tweets were already favorited")
 
 
 def thank(api, tweet):
@@ -68,16 +74,22 @@ def get_mentions(api):
     Finds mentions of the authenticated user and favorites them if they
     haven't been favorited already.
     """
+    mentioners = []
+    errors = 0
+
     mentions = api.mentions_timeline(count=10)
     for m in mentions:
         try:
             m.favorite()
             m.user.follow()
-            print("Favorited and followed " + m.user.screen_name)
-        except tweepy.TweepError as e:
-            print(e.reason)
+            mentioners.append(m.user.screen_name)
+        except tweepy.TweepError:
+            errors += 1
         except StopIteration:
             break
+
+    print(f"Followed mentioners: {mentioners}")
+    print(f"{errors} users already followed")
 
 
 def follow_back(api):
@@ -85,14 +97,20 @@ def follow_back(api):
     Follows back the most recent 30 users who follow the authenticated
     user. Change `.items(30)` to change the number of follow-backs.
     """
+    follow_backs = []
+    errors = 0
+
     for follower in tweepy.Cursor(api.followers).items(10):
         try:
             follower.follow()
-            print("Followed back " + follower.screen_name)
-        except tweepy.TweepError as e:
-            print(e.reason)
+            follow_backs.append(follower.screen_name)
+        except tweepy.TweepError:
+            errors += 1
         except StopIteration:
             break
+    
+    print(f"Followed back: {follow_backs}")
+    print(f"{errors} users already followed")
 
 
 if __name__ == "__main__":
