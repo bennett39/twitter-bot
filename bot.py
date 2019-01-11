@@ -33,7 +33,7 @@ def search_urls(api, urls):
     """
     users_thanked = []
     errors = 0
-    for url in urls:
+    for url in tqdm(urls):
         num_tweets = 10
         for t in tqdm(tweepy.Cursor(api.search, url).items(num_tweets)):
             try:
