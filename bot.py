@@ -34,7 +34,7 @@ def search_urls(api, urls):
     users_thanked = []
     errors = 0
     for url in tqdm(urls):
-        num_tweets = 10
+        num_tweets = 30
         for t in tqdm(tweepy.Cursor(api.search, url).items(num_tweets)):
             try:
                 t.favorite()
