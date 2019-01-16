@@ -55,7 +55,7 @@ def thank(api, tweet):
     Crafts a reply using the screen name and id of a given tweet. Choses
     a random thank you message as the reply.
     """
-    t = ["Thanks for sharing my article!", \
+    thank_you_messages = ["Thanks for sharing my article!", \
             "Glad you liked the article!", \
             "Thanks for the tweet of my article!", \
             "Glad to hear you enjoyed my article!", \
@@ -65,9 +65,9 @@ def thank(api, tweet):
             "Glad you liked the article enough to share it!", \
             "Appreciate you sharing my article!", \
             "Thanks for tweeting my article!"]
-    thanks = random.choice(t)
+    message = random.choice(thank_you_messages)
 
-    reply = "@" + tweet.user.screen_name + " " + thanks
+    reply = "@" + tweet.user.screen_name + " " + message
     api.update_status(reply, tweet.id)
 
 
