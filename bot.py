@@ -97,7 +97,7 @@ def get_mentions(api):
 def follow_back(api):
     """
     Follows back the most recent ## users who follow the authenticated
-    user. Change `.items(##)` to change the number of follow-backs.
+    user. Change .items(##) to change the number of follow-backs.
     """
     follow_backs = []
     errors = 0
