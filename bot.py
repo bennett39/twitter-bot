@@ -80,11 +80,11 @@ def get_mentions(api):
     errors = 0
 
     mentions = api.mentions_timeline(count=10)
-    for m in tqdm(mentions):
+    for mention in tqdm(mentions):
         try:
-            m.favorite()
-            m.user.follow()
-            mentioners.append(m.user.screen_name)
+            mention.favorite()
+            mention.user.follow()
+            mentioners.append(mention.user.screen_name)
         except tweepy.TweepError:
             errors += 1
         except StopIteration:
