@@ -35,12 +35,12 @@ def search_urls(api, urls):
     errors = 0
     for url in tqdm(urls):
         num_tweets = 30
-        for t in tqdm(tweepy.Cursor(api.search, url).items(num_tweets)):
+        for tweet in tqdm(tweepy.Cursor(api.search, url).items(num_tweets)):
             try:
-                t.favorite()
-                thank(api, t)
-                t.user.follow()
-                users_thanked.append(t.user.screen_name)
+                tweet.favorite()
+                thank(api, tweet)
+                tweet.user.follow()
+                users_thanked.append(tweet.user.screen_name)
             except tweepy.TweepError:
                 errors += 1
             except StopIteration:
