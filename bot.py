@@ -67,8 +67,11 @@ def thank(api, tweet):
             "Thanks for tweeting my article!"]
     message = random.choice(thank_you_messages)
 
-    reply = "@" + tweet.user.screen_name + " " + message
-    api.update_status(reply, tweet.id)
+    try:
+        reply = "@" + tweet.user.screen_name + " " + message
+        api.update_status(reply, tweet.id)
+    except tweepy.TweepError as e:
+        print(e)
 
 
 def get_mentions(api):
