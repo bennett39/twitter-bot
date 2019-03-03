@@ -17,7 +17,14 @@ def main():
     api = tweepy.API(auth)
 
     # Change these Twitter URL ids to whatever you want to search for
-    urls = ["url:ed8d13397c9c", "url:443940b8ef9f"]
+    urls = [
+        "url:ed8d13397c9c",
+        "url:443940b8ef9f",
+        "url:a1e4012eb859",
+        "url:1ee617ed46af",
+        "url:fb83ab848c6",
+        "url:2247efc1eaac",
+    ]
     search_urls(api, urls)
 
     get_mentions(api)
@@ -113,7 +120,7 @@ def follow_back(api):
             errors += 1
         except StopIteration:
             break
-    
+
     print(f"Followed back: {follow_backs}")
     print(f"{errors} users already followed", end="\n\n")
 
