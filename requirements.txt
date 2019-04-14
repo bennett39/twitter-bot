@@ -1,10 +1,14 @@
-certifi==2018.11.29
+certifi==2019.3.9
 chardet==3.0.4
 idna==2.8
-oauthlib==2.1.0
+oauthlib==3.0.1
+packaging==19.0
+pip-review==1.0
+pyparsing==2.4.0
 PySocks==1.6.8
 requests==2.21.0
-requests-oauthlib==1.0.0
+requests-oauthlib==1.2.0
 six==1.12.0
+tqdm==4.31.1
 tweepy==3.7.0
 urllib3==1.24.1
