@@ -1,10 +1,8 @@
-import random
-import sys
+from dotenv import load_dotenv
+import os
+from random import choice
 from tqdm import tqdm
 import tweepy
-
-from secrets import consumer_key, consumer_secret, access_token, \
-    access_token_secret
 
 def main():
     """
@@ -12,10 +10,16 @@ def main():
     Tutorial: https://bit.ly/2s2dtvS
     Tweepy docs: http://docs.tweepy.org/en/3.7.0/
     """
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
+    load_dotenv()
+    auth = tweepy.OAuthHandler(
+            os.getenv('CONSUMER_KEY'),
+            os.getenv('CONSUMER_SECRET')
+        )
+    auth.set_access_token(
+            os.getenv('ACCESS_TOKEN'),
+            os.getenv('ACCESS_TOKEN_SECRET')
+        )
     api = tweepy.API(auth)
-
     # Change these Twitter URL ids to whatever you want to search for
     urls = [
         "url:ed8d13397c9c",
@@ -26,7 +30,6 @@ def main():
         "url:2247efc1eaac",
     ]
     search_urls(api, urls)
-
     get_mentions(api)
     follow_back(api)
 
@@ -52,7 +55,6 @@ def search_urls(api, urls):
                 errors += 1
             except StopIteration:
                 break
-
     print(f"Thanked {users_thanked}")
     print(f"{errors} tweets were already favorited", end="\n\n")
 
@@ -62,18 +64,19 @@ def thank(api, tweet):
     Crafts a reply using the screen name and id of a given tweet. Choses
     a random thank you message as the reply.
     """
-    thank_you_messages = ["Thanks for sharing my article!", \
-            "Glad you liked the article!", \
-            "Thanks for the tweet of my article!", \
-            "Glad to hear you enjoyed my article!", \
-            "I'm happy you liked the article enough to tweet it!", \
-            "Thanks for the share! Glad you liked it!", \
+    thank_you_messages = [
+            "Thanks for sharing my article!",
+            "Glad you liked the article!",
+            "Thanks for the tweet of my article!",
+            "Glad to hear you enjoyed my article!",
+            "I'm happy you liked the article enough to tweet it!",
+            "Thanks for the share! Glad you liked it!",
             "I appreciate the tweet -- glad you enjoyed my article!",
-            "Glad you liked the article enough to share it!", \
-            "Appreciate you sharing my article!", \
-            "Thanks for tweeting my article!"]
-    message = random.choice(thank_you_messages)
-
+            "Glad you liked the article enough to share it!",
+            "Appreciate you sharing my article!",
+            "Thanks for tweeting my article!"
+        ]
+    message = choice(thank_you_messages)
     try:
         reply = "@" + tweet.user.screen_name + " " + message
         api.update_status(reply, tweet.id)
@@ -88,7 +91,6 @@ def get_mentions(api):
     """
     mentioners = []
     errors = 0
-
     mentions = api.mentions_timeline(count=10)
     for mention in tqdm(mentions):
         try:
@@ -99,7 +101,6 @@ def get_mentions(api):
             errors += 1
         except StopIteration:
             break
-
     print(f"Followed mentioners: {mentioners}")
     print(f"{errors} users already followed", end="\n\n")
 
@@ -111,7 +112,6 @@ def follow_back(api):
     """
     follow_backs = []
     errors = 0
-
     for follower in tqdm(tweepy.Cursor(api.followers).items(10)):
         try:
             follower.follow()
@@ -120,7 +120,6 @@ def follow_back(api):
             errors += 1
         except StopIteration:
             break
-
     print(f"Followed back: {follow_backs}")
     print(f"{errors} users already followed", end="\n\n")
 

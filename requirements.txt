@@ -6,6 +6,7 @@ packaging==19.0
 pip-review==1.0
 pyparsing==2.4.0
 PySocks==1.6.8
+python-dotenv==0.10.1
 requests==2.21.0
 requests-oauthlib==1.2.0
 six==1.12.0
