@@ -1,8 +1,8 @@
-from dotenv import load_dotenv
-import os
 from random import choice
 from tqdm import tqdm
 import tweepy
+
+from config import api, urls
 
 def main():
     """
@@ -10,28 +10,10 @@ def main():
     Tutorial: https://bit.ly/2s2dtvS
     Tweepy docs: http://docs.tweepy.org/en/3.7.0/
     """
-    load_dotenv()
-    auth = tweepy.OAuthHandler(
-            os.getenv('CONSUMER_KEY'),
-            os.getenv('CONSUMER_SECRET')
-        )
-    auth.set_access_token(
-            os.getenv('ACCESS_TOKEN'),
-            os.getenv('ACCESS_TOKEN_SECRET')
-        )
-    api = tweepy.API(auth)
-    # Change these Twitter URL ids to whatever you want to search for
-    urls = [
-        "url:ed8d13397c9c",
-        "url:443940b8ef9f",
-        "url:a1e4012eb859",
-        "url:1ee617ed46af",
-        "url:fb83ab848c6",
-        "url:2247efc1eaac",
-    ]
     search_urls(api, urls)
     get_mentions(api)
     follow_back(api)
+    unfollow(api)
 
 
 def search_urls(api, urls):
@@ -47,10 +29,11 @@ def search_urls(api, urls):
         num_tweets = 30
         for tweet in tqdm(tweepy.Cursor(api.search, url).items(num_tweets)):
             try:
-                tweet.favorite()
-                thank(api, tweet)
-                tweet.user.follow()
-                users_thanked.append(tweet.user.screen_name)
+                if tweet.user.screen_name != 'bennettgarner':
+                    tweet.favorite()
+                    thank(api, tweet)
+                    tweet.user.follow()
+                    users_thanked.append(tweet.user.screen_name)
             except tweepy.TweepError:
                 errors += 1
             except StopIteration:
@@ -123,6 +106,19 @@ def follow_back(api):
     print(f"Followed back: {follow_backs}")
     print(f"{errors} users already followed", end="\n\n")
 
+
+def unfollow(api):
+    """ Unfollows users who don't follow me. """
+    count = 0
+    followers = api.followers_ids('bennettgarner')
+    friends = api.friends_ids('bennettgarner')
+    for friend in tqdm(friends):
+        if friend not in followers:
+            prompt = input(f"Unfollow {api.get_user(friend).screen_name}? y/n: ")
+            if prompt == 'Y' or prompt == 'y':
+                count += 1
+                api.destroy_friendship(friend)
+    print(f"Unfollowed {count} users.")
 
 if __name__ == "__main__":
     main()
