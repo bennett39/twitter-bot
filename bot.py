@@ -10,6 +10,15 @@ def main():
     Tutorial: https://bit.ly/2s2dtvS
     Tweepy docs: http://docs.tweepy.org/en/3.7.0/
     """
+    # Change these Twitter URL ids to whatever you want to search for
+    urls = [
+        "url:ed8d13397c9c",
+        "url:443940b8ef9f",
+        "url:a1e4012eb859",
+        "url:1ee617ed46af",
+        "url:fb83ab848c6",
+        "url:2247efc1eaac",
+    ]
     search_urls(api, urls)
     get_mentions(api)
     follow_back(api)
@@ -107,18 +116,6 @@ def follow_back(api):
     print(f"{errors} users already followed", end="\n\n")
 
 
-def unfollow(api):
-    """ Unfollows users who don't follow me. """
-    count = 0
-    followers = api.followers_ids('bennettgarner')
-    friends = api.friends_ids('bennettgarner')
-    for friend in tqdm(friends):
-        if friend not in followers:
-            prompt = input(f"Unfollow {api.get_user(friend).screen_name}? y/n: ")
-            if prompt == 'Y' or prompt == 'y':
-                count += 1
-                api.destroy_friendship(friend)
-    print(f"Unfollowed {count} users.")
 
 if __name__ == "__main__":
     main()
