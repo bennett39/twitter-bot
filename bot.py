@@ -2,7 +2,7 @@ from random import choice
 from tqdm import tqdm
 import tweepy
 
-from config import api, urls
+from config import api
 
 def main():
     """
@@ -22,7 +22,6 @@ def main():
     search_urls(api, urls)
     get_mentions(api)
     follow_back(api)
-    unfollow(api)
 
 
 def search_urls(api, urls):

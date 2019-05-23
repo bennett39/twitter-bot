@@ -14,8 +14,10 @@ influencers = {
     564919357, 310897418
 }
 unfollowing = [f for f in friends if f not in followers and f not in influencers]
+unfollow_count = 0
 for u in unfollowing:
     prompt = input(f"Unfollow {api.get_user(u).screen_name}? y/n: ")
     if prompt == 'Y' or prompt == 'y':
+        unfollow_count += 1
         api.destroy_friendship(u)
-print(f"Unfollowed {len(unfollowing)} users.")
+print(f"Unfollowed {unfollow_count} users.")
