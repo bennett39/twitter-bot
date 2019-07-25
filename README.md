@@ -1,6 +1,8 @@
 # twitter-bot
 Automate my Twitter likes and retweets
 
+![twitter bot screencast](http://bennettgarner.com/images/screen-twitterbot.png)
+
 To use it yourself:
 1. Clone the repo
 2. `pip install -r requirements.txt`
